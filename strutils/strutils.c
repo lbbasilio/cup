@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-char** strSplit (char* src, char* delim, int* strCount)
+char** cup_str_split (char* src, char* delim, int* strCount)
 {
 	*strCount = 0;
 	char** strings = NULL;
@@ -16,10 +16,10 @@ char** strSplit (char* src, char* delim, int* strCount)
 		int count = 0;
 		
 		// Return if no delimiters found
-		if (strFindFirstOf (src, delim, 0) == -1) 
+		if (cup_str_find_first_of (src, delim, 0) == -1) 
 		{
 			strings = malloc(sizeof(char*));
-			strings[0] = strDup (src);
+			strings[0] = cup_str_dup (src);
 			*strCount = 1;
 			return strings;
 		}
@@ -28,7 +28,7 @@ char** strSplit (char* src, char* delim, int* strCount)
 		int i;
 		for (i = 0; i < delimLength; ++i) 
 		{
-			count += strCountChar(src, delim[i]);
+			count += cup_count_char(src, delim[i]);
 			if (src[srcLength - 1] == delim[i] && srcLength > 1) count--;
 			if (src[0] == delim[i]) count--;
 		} 
@@ -58,31 +58,30 @@ char** strSplit (char* src, char* delim, int* strCount)
 		int lastPos;
 		for (i = 0; i <= count; ++i) 
 		{
-			lastPos = strFindFirstNotOf (src, delim, pos);
-			pos = strFindFirstOf (src, delim, lastPos);
+			lastPos = cup_find_first_not_of (src, delim, pos);
+			pos = cup_str_find_first_of (src, delim, lastPos);
 			if (pos == -1) pos = srcLength;
 
-			strings[i] = strSubstr (src, lastPos, pos);
+			strings[i] = cup_substr (src, lastPos, pos);
 			pos++;
 		}
 	}
 	return strings;
 }
 
-int strCountChar (char* src, char ch) 
+int cup_count_char (char* src, char ch) 
 {
 	int count = 0;
 	if (src)
 	{
 		int i, length = strlen(src);
-		for (i = 0; i < length; ++i) {
+		for (i = 0; i < length; ++i)
 			if (src[i] == ch) count++;
-		}
 	}
 	return count;
 }
 
-int strFindFirstOf (char* src, char* targets, int start)
+int cup_str_find_first_of (char* src, char* targets, int start)
 {
 	if (src)
 	{
@@ -103,7 +102,7 @@ int strFindFirstOf (char* src, char* targets, int start)
 	return -1;
 }
 
-int strFindFirstNotOf (char* src, char* targets, int start)
+int cup_find_first_not_of (char* src, char* targets, int start)
 {	
 	if (src)
 	{
@@ -127,7 +126,7 @@ int strFindFirstNotOf (char* src, char* targets, int start)
 	return -1;
 }
 
-char* strSubstr (char* src, int start, int end) 
+char* cup_substr (char* src, int start, int end) 
 {
 	char* newStr = NULL;
 	if (src)
@@ -150,7 +149,7 @@ char* strSubstr (char* src, int start, int end)
 	return newStr;
 }
 
-char* strDup (char* src)
+char* cup_str_dup (char* src)
 {
 	char* copy = NULL;
 	if (src)
@@ -167,7 +166,7 @@ char* strDup (char* src)
 	return copy;
 }
 
-void strToUpper (char* src)
+void cup_to_upper (char* src)
 {
 	if (src)	
 	{
@@ -181,7 +180,7 @@ void strToUpper (char* src)
 	}
 }
 
-void strCat (char* dst, char* src)
+void cup_str_cat (char* dst, char* src)
 {
 	if (dst && src)
 	{
@@ -191,4 +190,20 @@ void strCat (char* dst, char* src)
 		for (i = 0; i < srcLen; ++i) dst[dstLen + i] = src[i];
 		dst[dstLen + srcLen] = '\0';
 	}
+}
+
+char* cup_read_file(FILE* in)
+{
+	fseek(in, 0, SEEK_END);
+	int size = ftell(in);
+	fseek(in, 0, SEEK_SET);
+
+	char* content = malloc(size + 1);
+	if (content)
+	{
+		fread(content, size, 1, in);
+		content[size] = 0;
+	}
+
+	return content;
 }
