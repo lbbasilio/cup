@@ -2,9 +2,6 @@
 #include <string.h>
 
 #include "hashtable.h"
-#include "vector/vector.h"
-
-#define BUCKETS 11
 
 uint64_t hashtable_calc_hash(const char* key)
 {
@@ -38,7 +35,7 @@ void* hashtable_get(const hashtable_t* ht, const char* key)
 }
 
 // When updating key values, you are responsible for freeing the previous object
-void hashtable_set(hashtable_t* ht, const char* key, const void* data, uint64_t data_size)
+void hashtable_set(const hashtable_t* ht, const char* key, const void* data, uint64_t data_size)
 {
 	uint64_t index = hashtable_calc_hash(key);
 	vector_t* bucket = ht->buckets[index];
@@ -68,7 +65,7 @@ void hashtable_set(hashtable_t* ht, const char* key, const void* data, uint64_t 
 	vector_add(bucket, new_node);
 }
 
-void hashtable_free(const hashtable_t* ht)
+void hashtable_free(hashtable_t* ht)
 {
 	for (uint64_t i = 0; i < ht->bucket_count; ++i)
 		vector_free(ht->buckets[i]);

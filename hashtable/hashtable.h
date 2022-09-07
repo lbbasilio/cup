@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#include "vector/vector.h"
+
+#define BUCKETS 11
+
 typedef struct {
 	char* key;
 	void* data;
