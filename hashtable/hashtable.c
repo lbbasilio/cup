@@ -8,7 +8,7 @@ uint64_t hashtable_calc_hash(const char* key)
 	uint64_t hash = 0;
 	for(char* it = (char*)key; *it != 0; ++it)
 		hash = *it + 31 * hash;
-	return hash & BUCKETS;		
+	return hash % BUCKETS;		
 }
 
 hashtable_t* hashtable_alloc()
