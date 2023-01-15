@@ -219,7 +219,7 @@ BOOL_SUCCESS:
 	*size = sizeof(int64_t);
 
 BOOL_END:
-	return it;
+	return ++it;
 }
 
 static char* parse_null(char* start, void** ptr, int64_t* size)
@@ -251,7 +251,7 @@ NULL_SUCCESS:
 	*ptr = NULL;
 
 NULL_END:
-	return it;
+	return ++it;
 }
 
 // Forward declaration for recursive function definition
@@ -326,7 +326,7 @@ static char* parse_array(char* start, list_t** l, int64_t* size)
 		void* el_val = NULL;
 		switch (state) {
 			case S0:	if (*it == '[') state = S1;
-						else goto ARR_END;
+						else goto ARR_ERR;
 						break;
 			case S1:	if (*it == ']') goto ARR_SUCCESS;
 						else if (json_is_whitespace(*it)) state = S1;
@@ -360,7 +360,7 @@ static char* parse_array(char* start, list_t** l, int64_t* size)
 
 ARR_SUCCESS:
 	*size = sizeof(list_t);
-	return it;
+	return ++it;
 
 ARR_ERR:
 	list_free(*l);
