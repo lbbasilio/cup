@@ -2,6 +2,7 @@
 #define STRUTILS_H
 
 #include <stdint.h>
+#include <stdio.h>
 
 // HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
 // All strings are assumed to be 0 terminated

@@ -58,7 +58,7 @@ char** cup_str_split (char* src, char* delim, int* strCount)
 		int lastPos;
 		for (i = 0; i <= count; ++i) 
 		{
-			lastPos = cup_find_first_not_of (src, delim, pos);
+			lastPos = cup_str_find_first_not_of (src, delim, pos);
 			pos = cup_str_find_first_of (src, delim, lastPos);
 			if (pos == -1) pos = srcLength;
 
@@ -72,8 +72,7 @@ char** cup_str_split (char* src, char* delim, int* strCount)
 int cup_count_char (char* src, char ch) 
 {
 	int count = 0;
-	if (src)
-	{
+	if (src) {
 		int i, length = strlen(src);
 		for (i = 0; i < length; ++i)
 			if (src[i] == ch) count++;
@@ -83,23 +82,6 @@ int cup_count_char (char* src, char ch)
 
 int cup_str_find_first_of (char* src, char* targets, int start)
 {
-<<<<<<< HEAD
-	if (src)
-	{
-		int length = strlen(src);
-		if (start > length - 1) return -1;
-
-		int position;
-		for (position = start; position < length; ++position) 
-		{
-			char ch = src[position];
-			int num = strlen(targets);
-			int it;
-			for (it = 0; it < num; ++it) {
-				if (ch == targets[it]) return position;	
-			}
-		}
-=======
 	// Guard clauses
 	if (!src)		return -1;
 	if (!targets)	return -1; 
@@ -112,38 +94,17 @@ int cup_str_find_first_of (char* src, char* targets, int start)
 	if (!tgt_len) return -1;
 
 	// Search for targets on input string
-	for (int64_t position = start; position < src_len; ++position) 
-	{
+	for (int64_t position = start; position < src_len; ++position) {
 		char ch = src[position];
 		for (int64_t it = 0; it < tgt_len; ++it)
 			if (ch == targets[it]) 
 				return position;	
->>>>>>> 9829e6d (Solved unsigned/signed comparison warnings)
 	}
 	return -1;
 }
 
-int cup_find_first_not_of (char* src, char* targets, int start)
+int cup_str_find_first_not_of (char* src, char* targets, int start)
 {	
-<<<<<<< HEAD
-	if (src)
-	{
-		int length = strlen(src);
-		if (start > length - 1) return -1;
-
-		int position;
-		for (position = start; position < length; ++position) 
-		{
-			char ch = src[position];
-			int num = strlen(targets);
-			int flag = 0;
-			int it;
-			for (it = 0; it < num; ++it) {
-				if (ch != targets[it]) flag++;
-			}
-
-			if (flag == num) return position;
-=======
 	// Guard clauses
 	if (!src)		return -1;
 	if (!targets)	return -1;
@@ -155,13 +116,11 @@ int cup_find_first_not_of (char* src, char* targets, int start)
 	if (!tgt_len) return -1;
 
 	// Look for first equality with targets
-	for (int64_t position = start; position < src_len; ++position) 
-	{
+	for (int64_t position = start; position < src_len; ++position) {
 		char ch = src[position];
 		uint8_t flag = 0;
 		for (int64_t it = 0; it < tgt_len; ++it) {
 			flag += ch != targets[it];
->>>>>>> 9829e6d (Solved unsigned/signed comparison warnings)
 		}
 	}
 	return -1;
@@ -169,27 +128,6 @@ int cup_find_first_not_of (char* src, char* targets, int start)
 
 char* cup_substr (char* src, int start, int end) 
 {
-<<<<<<< HEAD
-	char* newStr = NULL;
-	if (src)
-	{
-		int length = strlen(src);
-		if (start > length - 1 || start >= end || start < 0) return NULL;
-		else 
-		{
-			if (end > length || end < 0) end = length;
-			
-			int charCount = end - start;
-			newStr = malloc(sizeof(char) * (charCount + 1));
-			if (newStr)
-			{
-				memcpy((void*) newStr, (void*) (src + start), charCount);
-				newStr[charCount] = '\0';
-			}
-		}
-	}
-	return newStr;
-=======
 	// Gaurd clauses
 	if (!src) 			return NULL;
 	if (end < 0) 		return NULL;
@@ -209,7 +147,6 @@ char* cup_substr (char* src, int start, int end)
 	new_str[char_count] = '\0';
 
 	return new_str;
->>>>>>> 9829e6d (Solved unsigned/signed comparison warnings)
 }
 
 char* cup_str_dup (char* src)
