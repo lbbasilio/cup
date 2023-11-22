@@ -1,4 +1,4 @@
-## Cup - C utility packages
+## cup - C utility packages
 <pre>
                       (
                         )     (
