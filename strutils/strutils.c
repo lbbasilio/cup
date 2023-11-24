@@ -11,9 +11,6 @@ char** cup_str_split(char* src, char* delim, size_t* str_count)
 	if (!src)	return strings;
 	if (!delim)	return strings;
 
-	size_t src_len = strlen(src);
-	size_t delim_len = strlen(delim);
-	
 	// Return if no delimiters found
 	if (!strpbrk(src, delim)) {
 		strings = malloc(sizeof(char*));
@@ -22,6 +19,9 @@ char** cup_str_split(char* src, char* delim, size_t* str_count)
 		return strings;
 	}
 
+	size_t src_len = strlen(src);
+	size_t delim_len = strlen(delim);
+	
 	// Count delimiter occurrences	
 	size_t count = 0;
 	for (size_t i = 0; i < src_len; ++i) {
@@ -56,11 +56,6 @@ char** cup_str_split_substr(char* src, char* substr, size_t* str_count)
 	if (!src) 		return strings;
 	if (!substr)	return strings;
 	
-	size_t src_len = strlen(src);
-	if (!src_len) return strings;
-
-	size_t substr_len = strlen(substr);
-	if (!substr_len) return strings;
 
 	// Return if no substring was found
 	if (!strstr(src, substr)) {
@@ -70,28 +65,32 @@ char** cup_str_split_substr(char* src, char* substr, size_t* str_count)
 		return strings;
 	}
 
+	size_t substr_len = strlen(substr);
+
 	// Count substring occurrences	
-	//size_t count = 0;
-	//for (size_t i = 0; i < substr_len; ++i) {
-	//	count += cup_count_char(src, delim[i]);
-	//	if (src[srcLength - 1] == delim[i] && srcLength > 1) count--;
-	//	if (src[0] == delim[i]) count--;
-	//} 
+	size_t count = 0;
+	char* ptr = src;
+	while (*ptr) {
+		char* c = strstr(ptr, substr);
+		if (c) {
+			ptr = c + substr_len;
+			count++;
+		}
+		else {
+			ptr++;
+		}
+	}
 
-	//// Allocate correct number of substrings
-	//strings = malloc((count + 1) * sizeof(char*));
-	//*str_count = count + 1;
+	// Allocate correct number of substrings
+	strings = malloc((count + 1) * sizeof(char*));
+	*str_count = count + 1;
 
-	//// Find and create substrings
-	//size_t pos = 0;
-	//for (i = 0; i <= count; ++i) {
-	//	size_t last_pos = cup_str_find_first_not_of (src, delim, pos);
-	//	pos = cup_str_find_first_of (src, delim, lastPos);
-	//	if (pos == -1) pos = srcLength;
-
-	//	strings[i] = cup_substr (src, lastPos, pos);
-	//	pos++;
-	//}
+	// Find and create substrings
+	for (size_t i = 0; i <= count; ++i) {
+		size_t new_str_len = strstr(src, substr) - src;
+		strings[i] = cup_substr(src, 0, new_str_len);
+		src += new_str_len + substr_len;
+	}
 
 	return strings;
 }
