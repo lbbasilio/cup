@@ -3,15 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-void cup_free_string_array(char** arr, size_t len)
-{
-	if (!arr) return;
-
-	for (size_t i = 0; i < len; ++i)
-		if (arr[i]) free(arr[i]);
-	free(arr);
-}
-
 char** cup_str_split(char* src, char* delim, size_t* str_count)
 {
 	*str_count = 0;
@@ -134,6 +125,15 @@ char** cup_str_split_substr(char* src, char* substr, size_t* str_count)
 	//}
 
 	return strings;
+}
+
+void cup_free_string_array(char** arr, size_t len)
+{
+	if (!arr) return;
+
+	for (size_t i = 0; i < len; ++i)
+		if (arr[i]) free(arr[i]);
+	free(arr);
 }
 
 size_t cup_count_char(char* src, char ch) 
