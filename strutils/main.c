@@ -55,8 +55,8 @@ uint8_t str_split_test_2()
 	char str[] = "Deixa eu baitar ele aqui ";
 
 	// Expected Outputs
-	int64_t exp_count = 6;
-	char* exp_ans[] = { "D", "ixa", "u", "baitar", "l", "aqui" }; 
+	int64_t exp_count = 10;
+	char* exp_ans[] = { "D", "ixa", "", "u", "baitar", "", "l", "", "aqui", "" }; 
 
 	return str_split_inner_test(delim, str, exp_count, exp_ans);
 }

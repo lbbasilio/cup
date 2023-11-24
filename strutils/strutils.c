@@ -24,55 +24,24 @@ char** cup_str_split(char* src, char* delim, size_t* str_count)
 
 	// Count delimiter occurrences	
 	size_t count = 0;
-	uint8_t last_was_delim = 0;
-	for (size_t i = 1; i < src_len - 2; ++i) {
-		uint8_t is_delim = 0;
-		for (size_t j = 0; j < delim_len; j++) {
+	for (size_t i = 0; i < src_len; ++i) {
+		for (size_t j = 0; j < delim_len; ++j) {
 			if (src[i] == delim[j]) {
-				is_delim = 1;
+				count++;
 				break;
 			}
 		}
-		count += is_delim && !last_was_delim;
-		last_was_delim = is_delim;
 	}
-	//for (size_t i = 0; i < delim_len; ++i) {
-	//	count += cup_count_char(src, delim[i]);
-	//	if (src[src_len - 1] == delim[i] && src_len > 1) count--;
-
-
-	//// Ignore successive delimiter occurrences
-	//char last_ch = src[0];
-	//for (size_t i = 1; i < src_len; ++i) {
-	//	char ch = src[i];
-	//	uint8_t flag = 0;
-	//	for (size_t j = 0; j < delim_len; ++j) {
-	//		if (last_ch == delim[j]) flag++;
-	//		if (ch == delim[j]) flag++;
-	//	}
-
-	//	if (flag == 2) count--;
-	//	last_ch = ch;
-	//}
 
 	// Allocate correct number of substrings
 	strings = malloc((count + 1) * sizeof(char*));
 	*str_count = count + 1;
 
 	// Find and create substrings
-	//size_t offset = 0;
 	for (size_t i = 0; i <= count; ++i) {
 		size_t new_str_len = strcspn(src, delim);
 		strings[i] = cup_substr(src, 0, new_str_len);
-		src = strpbrk(src, delim);
-		if (!src) break;
-		src += strspn(src, delim);
-
-		//size_t new_str_len = strcspn(src + offset, delim);
-		//strings[i] = cup_substr(src, offset, offset + new_str_len);
-		//char* c = strpbrk(src, delim);
-		//if (c) offset = c - src + 1;
-		//else offset = src_len;
+		src += new_str_len + 1;
 	}
 
 	return strings;
