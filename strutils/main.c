@@ -4,12 +4,58 @@
 
 #define OUTPUT stdout
 
-uint8_t str_split_inner_test(char* delim, char* str, size_t exp_count, char** exp_ans)
+typedef struct {
+	char* in_str;
+	char* in_delim;
+	size_t out_count;
+	char** out_strs;
+} cup_str_split_test;
+
+cup_str_split_test cup_str_split_tests[] = {
+	{ 
+		.in_str = "Do the impossible, see the invisible.", 
+		.in_delim = " ", 
+		.out_count = 6, 
+		.out_strs = (char*[]) { "Do", "the", "impossible,", "see", "the", "invisible." } 
+	},
+	{
+		.in_str = "Deixa eu baitar ele aqui!", 
+		.in_delim = " e!", 
+		.out_count = 10, 
+		.out_strs = (char*[]) { "D", "ixa", "", "u", "baitar", "", "l", "", "aqui", "" }
+	},
+	{
+		.in_str = "Nothing to see here, folks!", 
+		.in_delim = "xyz?", 
+		.out_count = 1, 
+		.out_strs = (char*[]) { "Nothing to see here, folks!" } 
+	},
+	{
+		.in_str = "", 
+		.in_delim = "abc", 
+		.out_count = 1, 
+		.out_strs = (char*[]) { "" } 
+	},
+	{
+		.in_str = "", 
+		.in_delim = NULL, 
+		.out_count = 1, 
+		.out_strs = NULL 
+	},
+	{
+		.in_str = NULL,
+		.in_delim = "eiko", 
+		.out_count = 1, 
+		.out_strs = NULL
+	}
+};
+
+uint8_t str_split_test(cup_str_split_test* test)
 {
 	// Test start
 	size_t count;
-	char** strings = cup_str_split(str, delim, &count);
-	if (!delim || !str) {
+	char** strings = cup_str_split(test->in_str, test->in_delim, &count);
+	if (!test->in_delim || !test->in_str) {
 		if (strings) {
 			fprintf(OUTPUT, "FAILED: expected strings = NULL, got %p\n", strings);
 			return 0;
@@ -19,14 +65,14 @@ uint8_t str_split_inner_test(char* delim, char* str, size_t exp_count, char** ex
 		fprintf(OUTPUT, "FAILED: str_split returned NULL\n"); 
 		return 0;
 	}
-	else if (count != exp_count) {
-		fprintf(OUTPUT, "FAILED: expected count = %lld, got %lld\n", exp_count, count);
+	else if (count != test->out_count) {
+		fprintf(OUTPUT, "FAILED: expected count = %lld, got %lld\n", test->out_count, count);
 		return 0;
 	}
 	else {
 		for (size_t i = 0; i < count; ++i) {
-			if (strcmp(strings[i], exp_ans[i])) {
-				fprintf(OUTPUT, "FAILED: strings[%lld] = %s, got %s", i, exp_ans[i], strings[i]); 
+			if (strcmp(strings[i], test->out_strs[i])) {
+				fprintf(OUTPUT, "FAILED: strings[%lld] = %s, got %s", i, test->out_strs[i], strings[i]); 
 				return 0;
 			}	
 		}			
@@ -35,97 +81,13 @@ uint8_t str_split_inner_test(char* delim, char* str, size_t exp_count, char** ex
 	return 1;
 }
 
-uint8_t str_split_test_1() 
-{
-	// Inputs
-	char delim[] = " ";
-	char str[] = "Do the impossible, see the invisible.";
-
-	// Expected Outputs
-	int64_t exp_count = 6;
-	char* exp_ans[] = { "Do", "the", "impossible,", "see", "the", "invisible." }; 
-
-	return str_split_inner_test(delim, str, exp_count, exp_ans);
-}
-
-uint8_t str_split_test_2() 
-{
-	// Inputs
-	char delim[] = " e";
-	char str[] = "Deixa eu baitar ele aqui ";
-
-	// Expected Outputs
-	int64_t exp_count = 10;
-	char* exp_ans[] = { "D", "ixa", "", "u", "baitar", "", "l", "", "aqui", "" }; 
-
-	return str_split_inner_test(delim, str, exp_count, exp_ans);
-}
-
-uint8_t str_split_test_3() 
-{
-	// Inputs
-	char delim[] = "zxm?";
-	char str[] = "Nothing to see here, folks!";
-
-	// Expected Outputs
-	int64_t exp_count = 1;
-	char* exp_ans[] = { "Nothing to see here, folks!" }; 
-
-	return str_split_inner_test(delim, str, exp_count, exp_ans);
-}
-
-uint8_t str_split_test_4() 
-{
-	// Inputs
-	char delim[] = "abcd3";
-	char str[] = "";
-
-	// Expected Outputs
-	int64_t exp_count = 1;
-	char* exp_ans[] = { "" }; 
-
-	return str_split_inner_test(delim, str, exp_count, exp_ans);
-}
-
-uint8_t str_split_test_5() 
-{
-	// Inputs
-	char* delim = NULL;
-	char str[] = "";
-
-	// Expected Outputs
-	int64_t exp_count = 1;
-	char** exp_ans = NULL; 
-
-	return str_split_inner_test(delim, str, exp_count, exp_ans);
-}
-
-uint8_t str_split_test_6() 
-{
-	// Inputs
-	char delim[] = "eik0";
-	char* str = NULL;
-
-	// Expected Outputs
-	int64_t exp_count = 1;
-	char** exp_ans = NULL; 
-
-	return str_split_inner_test(delim, str, exp_count, exp_ans);
-}
-
 int main()
 {
-	uint16_t current_passed = 0;
-	
-	// str_split
+	// cup_str_split
 	fprintf(OUTPUT, ">> str_split\n");
 	{
-		current_passed += str_split_test_1();
-		current_passed += str_split_test_2();
-		current_passed += str_split_test_3();
-		current_passed += str_split_test_4();
-		current_passed += str_split_test_5();
-		current_passed += str_split_test_6();
+		for (size_t i = 0; i < sizeof(cup_str_split_tests) / sizeof(cup_str_split_test); ++i)
+			str_split_test(&cup_str_split_tests[i]);
 	}
 
 	return 0;
