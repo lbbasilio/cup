@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "vector/vector.h"
+#include "cup/vector/vector.h"
 
 #define BUCKETS 11
 

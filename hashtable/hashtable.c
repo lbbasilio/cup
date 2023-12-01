@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "hashtable.h"
+#include "cup/hashtable/hashtable.h"
 
 uint64_t hashtable_calc_hash(const char* key)
 {
