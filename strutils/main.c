@@ -1,6 +1,5 @@
+#define CUP_STRUTILS_IMPLEMENTATION
 #include "strutils.h"
-#include <stdio.h>
-#include <string.h>
 
 #define OUTPUT stdout
 
