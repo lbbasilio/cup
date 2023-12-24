@@ -71,10 +71,12 @@ void hashtable_set(hashtable_t* ht, const char* key, const void* data, uint64_t 
 			goto CUP_HASHTABLE_UPDATE;
 		}
 		last = node;
+		node = node->next;
 	}
 
 	// Add if not exists
 	node = malloc(sizeof(hashtable_node_t));
+	node->next = NULL;
 	node->key = malloc(strlen(key));
 	strcpy(node->key, key);
 
