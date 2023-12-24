@@ -1,3 +1,4 @@
+#define CUP_LIST_IMPLEMENTATION
 #include "list.h"
 
 #include <string.h>
