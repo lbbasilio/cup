@@ -1,3 +1,4 @@
+#define CUP_VECTOR_IMPLEMENTATION
 #include "vector.h"
 #include <stdio.h>
 
